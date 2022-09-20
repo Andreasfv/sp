@@ -1,0 +1,99 @@
+{
+  "name": "sp-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "local": "vite --mode local",
+    "start": "vite --mode development",
+    "build": "tsc && vite build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "prepare": "cd .. && husky install frontend/.husky",
+    "prepare:old": "husky install",
+    "generate": "graphql-codegen --config codegen.yml"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ],
+    "rules": {
+      "react/jsx-uses-react": "off",
+      "react/react-in-jsx-scope": "off",
+      "no-console": [
+        "warn",
+        {
+          "allow": [
+            "warn",
+            "error"
+          ]
+        }
+      ],
+      "lodash/import-scope": [
+        "warn",
+        "method"
+      ]
+    },
+    "plugins": [
+      "lodash"
+    ],
+    "ignorePatterns": [
+      "src/generated/**/*"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "@ur/react-components": "^1.3.0",
+    "@ur/react-hooks": "^1.0.1",
+    "@urql/devtools": "^2.0.3",
+    "@urql/exchange-auth": "^1.0.0",
+    "graphql": "^16.6.0",
+    "lodash": "^4.17.21",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-intl": "^6.0.8",
+    "react-router-dom": "^6.3.0",
+    "react-scripts": "5.0.1",
+    "styled-components": "^5.3.5",
+    "urql": "^3.0.1",
+    "web-vitals": "^2.1.0"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "2.11.6",
+    "@graphql-codegen/typescript": "2.7.3",
+    "@graphql-codegen/typescript-operations": "2.5.3",
+    "@graphql-codegen/typescript-urql": "^3.6.4",
+    "@graphql-codegen/urql-introspection": "2.2.1",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^13.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "@types/jest": "^27.0.1",
+    "@types/lodash": "^4.14.184",
+    "@types/node": "^16.7.13",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@types/styled-components": "^5.1.26",
+    "@vitejs/plugin-react": "^2.0.1",
+    "eslint-plugin-lodash": "^7.4.0",
+    "husky": "^6.0.0",
+    "prettier": "^2.7.1",
+    "pretty-quick": "^3.1.3",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-polyfill-node": "^0.10.2",
+    "typescript": "^4.4.2",
+    "vite": "^3.0.9",
+    "vite-tsconfig-paths": "^3.5.0"
+  }
+}

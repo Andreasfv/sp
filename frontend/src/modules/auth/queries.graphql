@@ -1,0 +1,16 @@
+query Me {
+  me {
+    id
+    email
+    firstName
+    lastName
+    role
+    organization {
+      id
+    }
+  }
+}
+
+query IsLoggedIn {
+  isLoggedIn
+}

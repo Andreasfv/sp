@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int          @id @default(autoincrement())
+  email          String       @unique
+  organizationId Int
+  role           Role         @default(USER)
+  createdAt      DateTime     @default(now())
+  firstName      String
+  lastName       String
+  updatedAt      DateTime     @updatedAt
+  Organization   Organization @relation(fields: [organizationId], references: [id])
+  password       String
+}
+
+
+model Organization {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String?
+  users       User[]
+}
+
+model Straffepils {
+  id        Int   @id @default(autoincrement())
+  receiver  User  @relation(fields: [userId], references: [id])
+  giver     User  @relation(fields: [userId], references: [id])
+  reason    String
+  amount    Int 
+}
+
+enum Role {
+  ADMIN
+  USER
+}

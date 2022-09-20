@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["esnext"],
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "rootDir": "..",
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es5"
+  },
+  "include": ["src/**/*", "../ur.json"]
+}
