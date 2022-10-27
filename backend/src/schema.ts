@@ -1,6 +1,7 @@
 import * as UserSchema from './modules/users/graphql'
 import * as OrganizationSchema from './modules/organizations/graphql'
 import * as Types from './types/index'
+import * as StraffepilsSchema from './modules/straffepils/graphql'
 
 import { makeSchema } from 'nexus'
 
@@ -9,6 +10,7 @@ export const schema = makeSchema({
     ...UserSchema,
     ...OrganizationSchema,
     ...Types,
+    ...StraffepilsSchema,
   },
   outputs: {
     schema: __dirname + '/../schema.graphql',

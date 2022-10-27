@@ -102,7 +102,6 @@ export const Login: React.FC<LoginProps> = () => {
   }, [isLoggedInData, nav])
 
   if (isLoggedInFetching) return <FullPageLoader />
-  if (!!isLoggedInError) return <FullPageError />
 
   return (
     <Wrapper>

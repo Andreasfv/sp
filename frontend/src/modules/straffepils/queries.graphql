@@ -1,0 +1,13 @@
+query AllStraffepils($byReceiver: Int) {
+  allStraffepils(byReceiver: $byReceiver) {
+    giverId
+    receiverId
+    reason
+    receiver {
+      id
+    }
+    giver {
+      id
+    }
+  }
+}

@@ -17,6 +17,8 @@ model User {
   lastName       String
   updatedAt      DateTime     @updatedAt
   Organization   Organization @relation(fields: [organizationId], references: [id])
+  Received       Straffepils[] @relation(name: "ReceivedOnStraffepils")
+  Given          Straffepils[] @relation(name: "GivenOnStraffepils")
   password       String
 }
 
@@ -29,11 +31,14 @@ model Organization {
 }
 
 model Straffepils {
-  id        Int   @id @default(autoincrement())
-  receiver  User  @relation(fields: [userId], references: [id])
-  giver     User  @relation(fields: [userId], references: [id])
-  reason    String
-  amount    Int 
+  id          Int   @id @default(autoincrement())
+  receiverId  Int
+  giverId     Int
+  receiver    User  @relation("ReceivedOnStraffepils", fields: [receiverId], references: [id])
+  giver       User  @relation("GivenOnStraffepils", fields: [giverId], references: [id])
+  reason      String
+  amount      Int
+  confirmed   Boolean  @default(false)
 }
 
 enum Role {

@@ -6,15 +6,15 @@ import { Bootstrap } from './Bootstrap'
 
 export const Root: React.FC = () => {
   return (
-    <Bootstrap>
-      <BrowserRouter>
+    <BrowserRouter>
+      <Bootstrap>
         <Routes>
           <Route path="/*" element={<Authenticate />} />
 
           <Route path="login" element={<Login />} />
           <Route path="logout" element={<Logout />} />
         </Routes>
-      </BrowserRouter>
-    </Bootstrap>
+      </Bootstrap>
+    </BrowserRouter>
   )
 }

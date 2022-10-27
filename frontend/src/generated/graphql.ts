@@ -32,9 +32,15 @@ export type CreateOrganizationInput = {
   name: Scalars['String']
 }
 
+export type CreateStraffepilsReturn = {
+  __typename?: 'CreateStraffepilsReturn'
+  ok?: Maybe<Scalars['Boolean']>
+}
+
 export type Mutation = {
   __typename?: 'Mutation'
   createOrganization: Organization
+  createStraffepils: CreateStraffepilsReturn
   deleteOrganization: Organization
   loginUser: SignupUserReturn
   signupUser: SignupUserReturn
@@ -43,6 +49,10 @@ export type Mutation = {
 
 export type MutationCreateOrganizationArgs = {
   data: CreateOrganizationInput
+}
+
+export type MutationCreateStraffepilsArgs = {
+  data: StraffepilsCreateInput
 }
 
 export type MutationDeleteOrganizationArgs = {
@@ -78,16 +88,26 @@ export type OrganizationOrderByInput = {
 export type Query = {
   __typename?: 'Query'
   allOrganizations?: Maybe<Array<Maybe<Organization>>>
+  allStraffepils?: Maybe<Array<Maybe<Straffepils>>>
   allUsers?: Maybe<Array<Maybe<User>>>
   isLoggedIn: Scalars['Boolean']
   me?: Maybe<User>
   organization?: Maybe<Organization>
+  straffepils?: Maybe<Straffepils>
   user?: Maybe<User>
 }
 
 export type QueryAllOrganizationsArgs = {
   filterString?: InputMaybe<Scalars['String']>
   orderBy?: InputMaybe<Array<OrganizationOrderByInput>>
+  skip?: InputMaybe<Scalars['Int']>
+  take?: InputMaybe<Scalars['Int']>
+}
+
+export type QueryAllStraffepilsArgs = {
+  byGiver?: InputMaybe<Scalars['Int']>
+  byReceiver?: InputMaybe<Scalars['Int']>
+  filterString?: InputMaybe<Scalars['String']>
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
 }
@@ -100,6 +120,10 @@ export type QueryAllUsersArgs = {
 }
 
 export type QueryOrganizationArgs = {
+  id: Scalars['Int']
+}
+
+export type QueryStraffepilsArgs = {
   id: Scalars['Int']
 }
 
@@ -121,6 +145,38 @@ export type SignupUserReturn = {
 export enum Sort {
   Asc = 'asc',
   Desc = 'desc',
+}
+
+export type Straffepils = {
+  __typename?: 'Straffepils'
+  confirmed?: Maybe<Scalars['Boolean']>
+  giver: User
+  giverId: Scalars['Int']
+  reason?: Maybe<Scalars['String']>
+  receiver: User
+  receiverId: Scalars['Int']
+}
+
+export type StraffepilsCreateInput = {
+  amount: Scalars['Int']
+  giverId: Scalars['Int']
+  reason: Scalars['String']
+  receiverId: Scalars['Int']
+}
+
+export type StraffepilsOrderByInput = {
+  amount?: InputMaybe<Sort>
+  giverId?: InputMaybe<Sort>
+  reason?: InputMaybe<Sort>
+  receiverId?: InputMaybe<Sort>
+}
+
+export type StraffepilsUpdateInput = {
+  amount?: InputMaybe<Scalars['Int']>
+  confirmed?: InputMaybe<Scalars['Boolean']>
+  giverId?: InputMaybe<Scalars['Int']>
+  reason?: InputMaybe<Scalars['String']>
+  receiverId?: InputMaybe<Scalars['Int']>
 }
 
 export type UpdateOrganizationInput = {
@@ -197,6 +253,34 @@ export type IsLoggedInQueryVariables = Exact<{ [key: string]: never }>
 
 export type IsLoggedInQuery = { __typename?: 'Query'; isLoggedIn: boolean }
 
+export type CreateStraffepilsMutationVariables = Exact<{
+  data: StraffepilsCreateInput
+}>
+
+export type CreateStraffepilsMutation = {
+  __typename?: 'Mutation'
+  createStraffepils: {
+    __typename?: 'CreateStraffepilsReturn'
+    ok?: boolean | null
+  }
+}
+
+export type AllStraffepilsQueryVariables = Exact<{
+  byReceiver?: InputMaybe<Scalars['Int']>
+}>
+
+export type AllStraffepilsQuery = {
+  __typename?: 'Query'
+  allStraffepils?: Array<{
+    __typename?: 'Straffepils'
+    giverId: number
+    receiverId: number
+    reason?: string | null
+    receiver: { __typename?: 'User'; id: number }
+    giver: { __typename?: 'User'; id: number }
+  } | null> | null
+}
+
 export const LoginDocument = gql`
   mutation Login($data: UserLoginInput!) {
     loginUser(data: $data) {
@@ -248,6 +332,44 @@ export function useIsLoggedInQuery(
     ...options,
   })
 }
+export const CreateStraffepilsDocument = gql`
+  mutation CreateStraffepils($data: StraffepilsCreateInput!) {
+    createStraffepils(data: $data) {
+      ok
+    }
+  }
+`
+
+export function useCreateStraffepilsMutation() {
+  return Urql.useMutation<
+    CreateStraffepilsMutation,
+    CreateStraffepilsMutationVariables
+  >(CreateStraffepilsDocument)
+}
+export const AllStraffepilsDocument = gql`
+  query AllStraffepils($byReceiver: Int) {
+    allStraffepils(byReceiver: $byReceiver) {
+      giverId
+      receiverId
+      reason
+      receiver {
+        id
+      }
+      giver {
+        id
+      }
+    }
+  }
+`
+
+export function useAllStraffepilsQuery(
+  options?: Omit<Urql.UseQueryArgs<AllStraffepilsQueryVariables>, 'query'>
+) {
+  return Urql.useQuery<AllStraffepilsQuery, AllStraffepilsQueryVariables>({
+    query: AllStraffepilsDocument,
+    ...options,
+  })
+}
 import { IntrospectionQuery } from 'graphql'
 export default {
   __schema: {
@@ -291,6 +413,21 @@ export default {
       },
       {
         kind: 'OBJECT',
+        name: 'CreateStraffepilsReturn',
+        fields: [
+          {
+            name: 'ok',
+            type: {
+              kind: 'SCALAR',
+              name: 'Any',
+            },
+            args: [],
+          },
+        ],
+        interfaces: [],
+      },
+      {
+        kind: 'OBJECT',
         name: 'Mutation',
         fields: [
           {
@@ -300,6 +437,29 @@ export default {
               ofType: {
                 kind: 'OBJECT',
                 name: 'Organization',
+                ofType: null,
+              },
+            },
+            args: [
+              {
+                name: 'data',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any',
+                  },
+                },
+              },
+            ],
+          },
+          {
+            name: 'createStraffepils',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'OBJECT',
+                name: 'CreateStraffepilsReturn',
                 ofType: null,
               },
             },
@@ -528,6 +688,54 @@ export default {
             ],
           },
           {
+            name: 'allStraffepils',
+            type: {
+              kind: 'LIST',
+              ofType: {
+                kind: 'OBJECT',
+                name: 'Straffepils',
+                ofType: null,
+              },
+            },
+            args: [
+              {
+                name: 'byGiver',
+                type: {
+                  kind: 'SCALAR',
+                  name: 'Any',
+                },
+              },
+              {
+                name: 'byReceiver',
+                type: {
+                  kind: 'SCALAR',
+                  name: 'Any',
+                },
+              },
+              {
+                name: 'filterString',
+                type: {
+                  kind: 'SCALAR',
+                  name: 'Any',
+                },
+              },
+              {
+                name: 'skip',
+                type: {
+                  kind: 'SCALAR',
+                  name: 'Any',
+                },
+              },
+              {
+                name: 'take',
+                type: {
+                  kind: 'SCALAR',
+                  name: 'Any',
+                },
+              },
+            ],
+          },
+          {
             name: 'allUsers',
             type: {
               kind: 'LIST',
@@ -615,6 +823,26 @@ export default {
             ],
           },
           {
+            name: 'straffepils',
+            type: {
+              kind: 'OBJECT',
+              name: 'Straffepils',
+              ofType: null,
+            },
+            args: [
+              {
+                name: 'id',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any',
+                  },
+                },
+              },
+            ],
+          },
+          {
             name: 'user',
             type: {
               kind: 'OBJECT',
@@ -655,6 +883,75 @@ export default {
               kind: 'OBJECT',
               name: 'User',
               ofType: null,
+            },
+            args: [],
+          },
+        ],
+        interfaces: [],
+      },
+      {
+        kind: 'OBJECT',
+        name: 'Straffepils',
+        fields: [
+          {
+            name: 'confirmed',
+            type: {
+              kind: 'SCALAR',
+              name: 'Any',
+            },
+            args: [],
+          },
+          {
+            name: 'giver',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'OBJECT',
+                name: 'User',
+                ofType: null,
+              },
+            },
+            args: [],
+          },
+          {
+            name: 'giverId',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'SCALAR',
+                name: 'Any',
+              },
+            },
+            args: [],
+          },
+          {
+            name: 'reason',
+            type: {
+              kind: 'SCALAR',
+              name: 'Any',
+            },
+            args: [],
+          },
+          {
+            name: 'receiver',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'OBJECT',
+                name: 'User',
+                ofType: null,
+              },
+            },
+            args: [],
+          },
+          {
+            name: 'receiverId',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'SCALAR',
+                name: 'Any',
+              },
             },
             args: [],
           },

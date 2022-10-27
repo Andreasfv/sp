@@ -1,0 +1,5 @@
+mutation CreateStraffepils($data: StraffepilsCreateInput!) {
+  createStraffepils(data: $data) {
+    ok
+  }
+}
