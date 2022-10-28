@@ -12,7 +12,12 @@ import {
   booleanArg,
 } from 'nexus'
 import { convertNullsToUndefined } from '../../utils/object'
-import { createStraffepils, getManyStraffepils, getStraffepils } from './bll'
+import {
+  createStraffepils,
+  getManyStraffepils,
+  getStraffepils,
+  updateStraffepils,
+} from './bll'
 
 export const Straffepils = objectType({
   name: 'Straffepils',
@@ -101,6 +106,7 @@ export const StraffepilsQuery = extendType({
         filterString: stringArg(),
         byGiver: intArg(),
         byReceiver: intArg(),
+        organizationId: intArg(),
         confirmed: booleanArg(),
         skip: intArg(),
         take: intArg(),
@@ -110,6 +116,7 @@ export const StraffepilsQuery = extendType({
           filterString: args.filterString ?? '',
           byGiver: args.byGiver ?? null,
           byReceiver: args.byReceiver ?? null,
+          organizationId: args.organizationId ?? null,
           confirmed: args.confirmed ?? null,
           skip: args.skip ?? null,
           take: args.take ?? null,
@@ -148,6 +155,21 @@ export const StraffepilsMutation = extendType({
         return result.getOrThrow()
       },
     })
+    t.nonNull.field('updateStraffepils', {
+      type: UpdateStraffepilsReturn,
+      args: {
+        id: nonNull(intArg()),
+        data: nonNull(
+          arg({
+            type: 'StraffepilsUpdateInput',
+          }),
+        ),
+      },
+      resolve: async (_parent, args, context) => {
+        const result = await updateStraffepils(context, args.id, args.data)
+        return result.getOrThrow()
+      },
+    })
   },
 })
 
@@ -174,6 +196,13 @@ export const StraffepilsUpdateInput = inputObjectType({
 
 export const CreateStraffepilsReturn = objectType({
   name: 'CreateStraffepilsReturn',
+  definition(t) {
+    t.boolean('ok')
+  },
+})
+
+export const UpdateStraffepilsReturn = objectType({
+  name: 'UpdateStraffepilsReturn',
   definition(t) {
     t.boolean('ok')
   },

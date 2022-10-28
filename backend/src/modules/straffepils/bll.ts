@@ -89,12 +89,23 @@ export async function getManyStraffepils(
   //   })
   // }
 
-  const { filterString, byGiver, confirmed, byReceiver, skip, take } = filter
+  const {
+    filterString,
+    byGiver,
+    confirmed,
+    byReceiver,
+    organizationId,
+    skip,
+    take,
+  } = filter
   var where = {
     where: {
       giverId: byGiver,
       receiverId: byReceiver,
       confirmed: confirmed,
+      receiver: {
+        organizationId: organizationId,
+      },
     },
   }
   const straffepils = await context.prisma.straffepils.findMany({

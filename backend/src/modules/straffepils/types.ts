@@ -14,6 +14,7 @@ export const GetManyStraffepilsFilterSchema = z.object({
   filterString: z.optional(z.string()),
   byReceiver: z.optional(z.number()),
   byGiver: z.optional(z.number()),
+  organizationId: z.optional(z.number()),
   confirmed: z.optional(z.boolean()),
   skip: z.optional(z.number()),
   take: z.optional(z.number()),

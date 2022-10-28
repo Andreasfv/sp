@@ -22,6 +22,10 @@ type Mutation {
   loginUser(data: UserLoginInput!): SignupUserReturn!
   signupUser(data: UserCreateInput!): SignupUserReturn!
   updateOrganization(data: UpdateOrganizationInput!, id: Int!): Organization!
+  updateStraffepils(
+    data: StraffepilsUpdateInput!
+    id: Int!
+  ): UpdateStraffepilsReturn!
 }
 
 type Organization {
@@ -48,6 +52,7 @@ type Query {
     byReceiver: Int
     confirmed: Boolean
     filterString: String
+    organizationId: Int
     skip: Int
     take: Int
   ): [Straffepils]
@@ -117,6 +122,10 @@ input StraffepilsUpdateInput {
 input UpdateOrganizationInput {
   description: String
   name: String
+}
+
+type UpdateStraffepilsReturn {
+  ok: Boolean
 }
 
 type User {
