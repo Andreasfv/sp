@@ -7,7 +7,7 @@ import urConfig from '../../ur.json'
 
 const server = createServer({
   port: 4000,
-  hostname: '3.75.102.129',
+  hostname: '0.0.0.0',
   schema,
   context(
     context: YogaInitialContext & { req: IncomingMessage; res: ServerResponse },
@@ -19,6 +19,7 @@ const server = createServer({
 const app = express()
 
 app.use('/graphql', server)
+app.use('/', () => 'moren din')
 app.listen(urConfig.backend.port, () => {
   console.log(server.getAddressInfo())
   console.log(`Server is running on http://localhost:${urConfig.backend.port}`)
