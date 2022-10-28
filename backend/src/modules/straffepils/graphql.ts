@@ -9,18 +9,19 @@ import {
   stringArg,
   intArg,
   list,
+  booleanArg,
 } from 'nexus'
 import { convertNullsToUndefined } from '../../utils/object'
 import { createStraffepils, getManyStraffepils, getStraffepils } from './bll'
-import { UserOrderByInput } from 'modules/users/graphql'
-import { BllResult } from 'core/types'
 
 export const Straffepils = objectType({
   name: 'Straffepils',
   definition(t) {
+    t.nonNull.int('id')
     t.nonNull.int('receiverId')
     t.nonNull.int('giverId')
     t.nonNull.string('reason')
+    t.nonNull.int('amount')
     t.string('reason')
     t.nullable.boolean('confirmed')
     t.nonNull.field('giver', {
@@ -34,6 +35,37 @@ export const Straffepils = objectType({
       type: 'User',
       resolve: async (parent, _args, context) => {
         const result = await getUser(context, parent.receiverId)
+        return result.getOrThrow()
+      },
+    })
+  },
+})
+
+export const UserStraffepils = objectType({
+  name: 'UserStraffepils',
+  definition(t) {
+    t.nonNull.field('straffepilsAmount', {
+      type: 'Int',
+      args: {
+        id: nonNull(intArg()),
+      },
+      resolve: async (_parent, args, context) => {
+        const sp = await getManyStraffepils(context, {
+          byReceiver: args.id!,
+          confirmed: true,
+        })
+        const amount = sp.getOrThrow().reduce((a, sp) => a + sp.amount, 0)
+        return amount
+      },
+    })
+    t.nonNull.list.field('straffepils', {
+      type: Straffepils,
+      args: { id: nonNull(intArg()) },
+      resolve: async (_parent, args, context) => {
+        const result = await getManyStraffepils(context, {
+          byReceiver: args.id,
+          confirmed: true,
+        })
         return result.getOrThrow()
       },
     })
@@ -59,7 +91,6 @@ export const StraffepilsQuery = extendType({
         id: nonNull(intArg()),
       },
       resolve: async (_parent, args, context) => {
-        console.log('NANI')
         const result = await getStraffepils(context, args.id)
         return result.getOrThrow()
       },
@@ -70,20 +101,30 @@ export const StraffepilsQuery = extendType({
         filterString: stringArg(),
         byGiver: intArg(),
         byReceiver: intArg(),
+        confirmed: booleanArg(),
         skip: intArg(),
         take: intArg(),
       },
       resolve: async (_parent, args, context) => {
-        console.log('BRUH HVORFOR IKKE NÅ DA')
         const filter = convertNullsToUndefined({
           filterString: args.filterString ?? '',
           byGiver: args.byGiver ?? null,
           byReceiver: args.byReceiver ?? null,
+          confirmed: args.confirmed ?? null,
           skip: args.skip ?? null,
           take: args.take ?? null,
         })
-        console.log('CMON BRUH', filter)
         const result = await getManyStraffepils(context, filter)
+        return result.getOrThrow()
+      },
+    })
+    t.field('userStraffepils', {
+      type: UserStraffepils,
+      args: {
+        id: nonNull(intArg()),
+      },
+      resolve: async (_parent, args, context) => {
+        const result = await getUser(context, args.id)
         return result.getOrThrow()
       },
     })
@@ -103,7 +144,6 @@ export const StraffepilsMutation = extendType({
         ),
       },
       resolve: async (_parent, args, context) => {
-        console.log('HALLLLLOOO')
         const result = await createStraffepils(context, args.data)
         return result.getOrThrow()
       },

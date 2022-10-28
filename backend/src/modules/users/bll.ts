@@ -9,13 +9,13 @@ export async function getUser(
   context: Context,
   id: number,
 ): Promise<BllResult<User>> {
-  if (
-    !userHasAccess(context.user, [createScopedPermission('users', id)], 'read')
-  ) {
-    return Fail({
-      type: ErrorType.Unauthorized,
-    })
-  }
+  // if (
+  //   !userHasAccess(context.user, [createScopedPermission('users', id)], 'read')
+  // ) {
+  //   return Fail({
+  //     type: ErrorType.Unauthorized,
+  //   })
+  // }
 
   const user = await context.prisma.user.findUnique({
     where: {
@@ -36,11 +36,11 @@ export async function getManyUsers(
   context: Context,
   filter: GetManyUsersFilterSchema,
 ): Promise<BllResult<User[]>> {
-  if (!userHasAccess(context.user, ['users'], 'read')) {
-    return Fail({
-      type: ErrorType.Unauthorized,
-    })
-  }
+  // if (!userHasAccess(context.user, ['users'], 'read')) {
+  //   return Fail({
+  //     type: ErrorType.Unauthorized,
+  //   })
+  // }
 
   const { filterString, skip, take, orderBy } = filter
 
@@ -66,6 +66,11 @@ export async function getManyUsers(
 
 export async function getMe(context: Context): Promise<BllResult<User>> {
   const me = context.user
+  const user = await context.prisma.user.findUnique({
+    where: {
+      id: me?.id,
+    },
+  })
 
   if (!me) {
     return Fail({
@@ -74,7 +79,7 @@ export async function getMe(context: Context): Promise<BllResult<User>> {
     })
   }
 
-  return Ok(me)
+  return user ? Ok(user) : Fail({ type: ErrorType.NotFound })
 }
 
 export async function createUser(

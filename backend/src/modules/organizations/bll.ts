@@ -13,21 +13,20 @@ export async function getOrganization(
   context: Context,
   id: number,
 ): Promise<BllResult<Organization>> {
-  if (
-    !userHasAccess(
-      context.user,
-      [createScopedPermission('organizations', id)],
-      'read',
-    )
-  ) {
-    return Fail({
-      type: ErrorType.Unauthorized,
-    })
-  }
-
+  // if (
+  //   !userHasAccess(
+  //     context.user,
+  //     [createScopedPermission('organizations', id)],
+  //     'read',
+  //   )
+  // ) {
+  //   return Fail({
+  //     type: ErrorType.Unauthorized,
+  //   })
+  // }
   const organization = await context.prisma.organization.findUnique({
     where: {
-      id,
+      id: id,
     },
   })
 
@@ -75,17 +74,17 @@ export async function getOrganizationUsers(
   context: Context,
   organizationId: number,
 ): Promise<BllResult<User[]>> {
-  if (
-    !userHasAccess(
-      context.user,
-      [createScopedPermission('organizations', organizationId, 'users')],
-      'read',
-    )
-  ) {
-    return Fail({
-      type: ErrorType.Unauthorized,
-    })
-  }
+  // if (
+  //   !userHasAccess(
+  //     context.user,
+  //     [createScopedPermission('organizations', organizationId, 'users')],
+  //     'read',
+  //   )
+  // ) {
+  //   return Fail({
+  //     type: ErrorType.Unauthorized,
+  //   })
+  // }
 
   const users = await context.prisma.user.findMany({
     where: {

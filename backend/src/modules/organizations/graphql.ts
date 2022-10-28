@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client'
+import { User } from '../users/graphql'
 import {
   nonNull,
   objectType,
@@ -73,6 +74,16 @@ export const OrganizationQuery = extendType({
         })
 
         const result = await getManyOrganizations(context, filter)
+        return result.getOrThrow()
+      },
+    })
+    t.list.field('organizationUsers', {
+      type: User,
+      args: {
+        id: nonNull(intArg()),
+      },
+      resolve: async (parent, args, context) => {
+        const result = await getOrganizationUsers(context, args.id)
         return result.getOrThrow()
       },
     })

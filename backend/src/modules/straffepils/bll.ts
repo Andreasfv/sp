@@ -77,7 +77,6 @@ export async function getManyStraffepils(
   context: Context,
   filter: GetManyStraffepilsFilterSchema,
 ): Promise<BllResult<Straffepils[]>> {
-  console.log('I GET SO FAR')
   // if (
   //   !userHasAccess(
   //     context.user,
@@ -85,29 +84,19 @@ export async function getManyStraffepils(
   //     'read',
   //   )
   // ) {
-  //   console.log('fuckssake no permissions for straffepils')
   //   return Fail({
   //     type: ErrorType.Unauthorized,
   //   })
   // }
 
-  const { filterString, byGiver, byReceiver, skip, take } = filter
-  var where = {}
-  if (byGiver && byReceiver) {
-    where = {
-      where: { AND: [{ giverId: byGiver }, { receiverId: byReceiver }] },
-    }
+  const { filterString, byGiver, confirmed, byReceiver, skip, take } = filter
+  var where = {
+    where: {
+      giverId: byGiver,
+      receiverId: byReceiver,
+      confirmed: confirmed,
+    },
   }
-
-  if (byGiver && !byReceiver) {
-    where = { where: { giverId: byGiver } }
-  }
-
-  if (byReceiver && !byGiver) {
-    where = { where: { receiverId: byReceiver } }
-  }
-
-  console.log('where', where)
   const straffepils = await context.prisma.straffepils.findMany({
     ...where,
     skip,
@@ -182,7 +171,6 @@ export async function createStraffepils(
   //     'create',
   //   )
   // ) {
-  //   console.log('shit dude')
   //   return Fail({
   //     type: ErrorType.Unauthorized,
   //   })

@@ -14,6 +14,7 @@ import { getManyUsers, getMe, getUser } from './bll'
 import { getOrganization } from '../organizations/bll'
 import { loginUser, signupUser } from '../authentication/bll'
 import { convertNullsToUndefined } from '../../utils/object'
+import { getManyStraffepils } from '../straffepils/bll'
 
 export const UserOrderByInput = inputObjectType({
   name: 'UserOrderByInput',
@@ -119,12 +120,22 @@ export const User = objectType({
     t.nonNull.string('lastName')
     t.nonNull.string('email')
     t.nonNull.field('role', { type: RoleTypes })
+    t.nonNull.int('organizationId')
     t.field('organization', {
       type: 'Organization',
       resolve: async (parent, _args, context) => {
         // TODO: Is parent.id correct here?
         const result = await getOrganization(context, parent.id)
 
+        return result.getOrThrow()
+      },
+    })
+    t.list.field('straffepils', {
+      type: 'Straffepils',
+      resolve: async (parent, _args, context) => {
+        const result = await getManyStraffepils(context, {
+          byReceiver: parent.id,
+        })
         return result.getOrThrow()
       },
     })

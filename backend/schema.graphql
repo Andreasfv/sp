@@ -46,6 +46,7 @@ type Query {
   allStraffepils(
     byGiver: Int
     byReceiver: Int
+    confirmed: Boolean
     filterString: String
     skip: Int
     take: Int
@@ -59,8 +60,10 @@ type Query {
   isLoggedIn: Boolean!
   me: User
   organization(id: Int!): Organization
+  organizationUsers(id: Int!): [User]
   straffepils(id: Int!): Straffepils
   user(id: Int!): User
+  userStraffepils(id: Int!): UserStraffepils
 }
 
 enum Role {
@@ -79,9 +82,11 @@ enum Sort {
 }
 
 type Straffepils {
+  amount: Int!
   confirmed: Boolean
   giver: User!
   giverId: Int!
+  id: Int!
   reason: String
   receiver: User!
   receiverId: Int!
@@ -120,7 +125,9 @@ type User {
   id: Int!
   lastName: String!
   organization: Organization
+  organizationId: Int!
   role: Role!
+  straffepils: [Straffepils]
 }
 
 input UserCreateInput {
@@ -143,6 +150,11 @@ input UserOrderByInput {
   lastName: Sort
   organization: Sort
   role: Sort
+}
+
+type UserStraffepils {
+  straffepils(id: Int!): [Straffepils]!
+  straffepilsAmount(id: Int!): Int!
 }
 
 input UserUniqueInput {
