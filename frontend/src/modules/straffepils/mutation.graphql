@@ -3,3 +3,9 @@ mutation CreateStraffepils($data: StraffepilsCreateInput!) {
     ok
   }
 }
+
+mutation UpdateStraffepils($id: Int!, $data: StraffepilsUpdateInput!) {
+  updateStraffepils(id: $id, data: $data) {
+    ok
+  }
+}

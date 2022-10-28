@@ -14,14 +14,13 @@ interface AuthState {
   token: string
 }
 
-const url = `http://3.75.102.129:${urConfig.backend.port}/graphql`
+const url = `http://localhost:2337/graphql`
 
 export const client = createClient({
   url,
   exchanges: [
     devtoolsExchange,
     dedupExchange,
-    cacheExchange,
     authExchange<AuthState>({
       async getAuth({ authState }) {
         if (!authState) {

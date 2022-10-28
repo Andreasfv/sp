@@ -1,5 +1,13 @@
-query AllStraffepils($byReceiver: Int, $confirmed: Boolean) {
-  allStraffepils(byReceiver: $byReceiver, confirmed: $confirmed) {
+query AllStraffepils(
+  $byReceiver: Int
+  $confirmed: Boolean
+  $organizationId: Int
+) {
+  allStraffepils(
+    byReceiver: $byReceiver
+    confirmed: $confirmed
+    organizationId: $organizationId
+  ) {
     id
     giverId
     receiverId

@@ -57,7 +57,6 @@ export const Login: React.FC<LoginProps> = () => {
   })
 
   const nav = useNavigate()
-
   const {
     formValues: form,
     formChangeHandler: handler,
@@ -94,11 +93,11 @@ export const Login: React.FC<LoginProps> = () => {
     if (!res.data?.loginUser.token || res.error) return
 
     setAuthToken(res.data.loginUser.token)
-    nav('/')
+    setTimeout(() => nav('/'), 1000)
   }
 
   useEffect(() => {
-    if (isLoggedInData?.isLoggedIn) nav('/')
+    if (isLoggedInData?.isLoggedIn) nav('/straffepils')
   }, [isLoggedInData, nav])
 
   if (isLoggedInFetching) return <FullPageLoader />

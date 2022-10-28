@@ -45,6 +45,7 @@ export type Mutation = {
   loginUser: SignupUserReturn
   signupUser: SignupUserReturn
   updateOrganization: Organization
+  updateStraffepils: UpdateStraffepilsReturn
 }
 
 export type MutationCreateOrganizationArgs = {
@@ -69,6 +70,11 @@ export type MutationSignupUserArgs = {
 
 export type MutationUpdateOrganizationArgs = {
   data: UpdateOrganizationInput
+  id: Scalars['Int']
+}
+
+export type MutationUpdateStraffepilsArgs = {
+  data: StraffepilsUpdateInput
   id: Scalars['Int']
 }
 
@@ -111,6 +117,7 @@ export type QueryAllStraffepilsArgs = {
   byReceiver?: InputMaybe<Scalars['Int']>
   confirmed?: InputMaybe<Scalars['Boolean']>
   filterString?: InputMaybe<Scalars['String']>
+  organizationId?: InputMaybe<Scalars['Int']>
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
 }
@@ -195,6 +202,11 @@ export type StraffepilsUpdateInput = {
 export type UpdateOrganizationInput = {
   description?: InputMaybe<Scalars['String']>
   name?: InputMaybe<Scalars['String']>
+}
+
+export type UpdateStraffepilsReturn = {
+  __typename?: 'UpdateStraffepilsReturn'
+  ok?: Maybe<Scalars['Boolean']>
 }
 
 export type User = {
@@ -295,9 +307,23 @@ export type CreateStraffepilsMutation = {
   }
 }
 
+export type UpdateStraffepilsMutationVariables = Exact<{
+  id: Scalars['Int']
+  data: StraffepilsUpdateInput
+}>
+
+export type UpdateStraffepilsMutation = {
+  __typename?: 'Mutation'
+  updateStraffepils: {
+    __typename?: 'UpdateStraffepilsReturn'
+    ok?: boolean | null
+  }
+}
+
 export type AllStraffepilsQueryVariables = Exact<{
   byReceiver?: InputMaybe<Scalars['Int']>
   confirmed?: InputMaybe<Scalars['Boolean']>
+  organizationId?: InputMaybe<Scalars['Int']>
 }>
 
 export type AllStraffepilsQuery = {
@@ -507,9 +533,31 @@ export function useCreateStraffepilsMutation() {
     CreateStraffepilsMutationVariables
   >(CreateStraffepilsDocument)
 }
+export const UpdateStraffepilsDocument = gql`
+  mutation UpdateStraffepils($id: Int!, $data: StraffepilsUpdateInput!) {
+    updateStraffepils(id: $id, data: $data) {
+      ok
+    }
+  }
+`
+
+export function useUpdateStraffepilsMutation() {
+  return Urql.useMutation<
+    UpdateStraffepilsMutation,
+    UpdateStraffepilsMutationVariables
+  >(UpdateStraffepilsDocument)
+}
 export const AllStraffepilsDocument = gql`
-  query AllStraffepils($byReceiver: Int, $confirmed: Boolean) {
-    allStraffepils(byReceiver: $byReceiver, confirmed: $confirmed) {
+  query AllStraffepils(
+    $byReceiver: Int
+    $confirmed: Boolean
+    $organizationId: Int
+  ) {
+    allStraffepils(
+      byReceiver: $byReceiver
+      confirmed: $confirmed
+      organizationId: $organizationId
+    ) {
       id
       giverId
       receiverId
@@ -867,6 +915,39 @@ export default {
               },
             ],
           },
+          {
+            name: 'updateStraffepils',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'OBJECT',
+                name: 'UpdateStraffepilsReturn',
+                ofType: null,
+              },
+            },
+            args: [
+              {
+                name: 'data',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any',
+                  },
+                },
+              },
+              {
+                name: 'id',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any',
+                  },
+                },
+              },
+            ],
+          },
         ],
         interfaces: [],
       },
@@ -1010,6 +1091,13 @@ export default {
               },
               {
                 name: 'filterString',
+                type: {
+                  kind: 'SCALAR',
+                  name: 'Any',
+                },
+              },
+              {
+                name: 'organizationId',
                 type: {
                   kind: 'SCALAR',
                   name: 'Any',
@@ -1313,6 +1401,21 @@ export default {
                 kind: 'SCALAR',
                 name: 'Any',
               },
+            },
+            args: [],
+          },
+        ],
+        interfaces: [],
+      },
+      {
+        kind: 'OBJECT',
+        name: 'UpdateStraffepilsReturn',
+        fields: [
+          {
+            name: 'ok',
+            type: {
+              kind: 'SCALAR',
+              name: 'Any',
             },
             args: [],
           },
