@@ -6,6 +6,8 @@ import { IncomingMessage, ServerResponse } from 'http'
 import urConfig from '../../ur.json'
 
 const server = createServer({
+  port: 4000,
+  hostname: '3.75.102.129',
   schema,
   context(
     context: YogaInitialContext & { req: IncomingMessage; res: ServerResponse },
