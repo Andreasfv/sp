@@ -1,5 +1,6 @@
 import { Dashboard } from 'modules/dashboard/Dashboard'
 import { Straffepils } from 'modules/straffepils/Straffepils'
+import { AdministrateStraffepils } from 'modules/straffepils/views/administratestraffepils/AdministrateStraffepils'
 import { StraffepilsDashboard } from 'modules/straffepils/views/dashboard/StraffepilsDashboard'
 import { MeldStraffepils } from 'modules/straffepils/views/meldstraffepils/MeldStraffepils'
 import { SeStraffepils } from 'modules/straffepils/views/sestraffepils/SeStraffepils'
@@ -16,6 +17,10 @@ export const AuthRoutes: React.FC<AuthRoutesProps> = () => {
         <Route path="" element={<StraffepilsDashboard />} />
         <Route path="meld-straffepils" element={<MeldStraffepils />} />
         <Route path="se-straffepils" element={<SeStraffepils />} />
+        <Route
+          path="administrate-straffepils"
+          element={<AdministrateStraffepils />}
+        />
       </Route>
     </Routes>
   )

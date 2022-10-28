@@ -93,8 +93,10 @@ export type Query = {
   isLoggedIn: Scalars['Boolean']
   me?: Maybe<User>
   organization?: Maybe<Organization>
+  organizationUsers?: Maybe<Array<Maybe<User>>>
   straffepils?: Maybe<Straffepils>
   user?: Maybe<User>
+  userStraffepils?: Maybe<UserStraffepils>
 }
 
 export type QueryAllOrganizationsArgs = {
@@ -107,6 +109,7 @@ export type QueryAllOrganizationsArgs = {
 export type QueryAllStraffepilsArgs = {
   byGiver?: InputMaybe<Scalars['Int']>
   byReceiver?: InputMaybe<Scalars['Int']>
+  confirmed?: InputMaybe<Scalars['Boolean']>
   filterString?: InputMaybe<Scalars['String']>
   skip?: InputMaybe<Scalars['Int']>
   take?: InputMaybe<Scalars['Int']>
@@ -123,11 +126,19 @@ export type QueryOrganizationArgs = {
   id: Scalars['Int']
 }
 
+export type QueryOrganizationUsersArgs = {
+  id: Scalars['Int']
+}
+
 export type QueryStraffepilsArgs = {
   id: Scalars['Int']
 }
 
 export type QueryUserArgs = {
+  id: Scalars['Int']
+}
+
+export type QueryUserStraffepilsArgs = {
   id: Scalars['Int']
 }
 
@@ -149,9 +160,11 @@ export enum Sort {
 
 export type Straffepils = {
   __typename?: 'Straffepils'
+  amount: Scalars['Int']
   confirmed?: Maybe<Scalars['Boolean']>
   giver: User
   giverId: Scalars['Int']
+  id: Scalars['Int']
   reason?: Maybe<Scalars['String']>
   receiver: User
   receiverId: Scalars['Int']
@@ -191,7 +204,9 @@ export type User = {
   id: Scalars['Int']
   lastName: Scalars['String']
   organization?: Maybe<Organization>
+  organizationId: Scalars['Int']
   role: Role
+  straffepils?: Maybe<Array<Maybe<Straffepils>>>
 }
 
 export type UserCreateInput = {
@@ -214,6 +229,20 @@ export type UserOrderByInput = {
   lastName?: InputMaybe<Sort>
   organization?: InputMaybe<Sort>
   role?: InputMaybe<Sort>
+}
+
+export type UserStraffepils = {
+  __typename?: 'UserStraffepils'
+  straffepils: Array<Maybe<Straffepils>>
+  straffepilsAmount: Scalars['Int']
+}
+
+export type UserStraffepilsStraffepilsArgs = {
+  id: Scalars['Int']
+}
+
+export type UserStraffepilsStraffepilsAmountArgs = {
+  id: Scalars['Int']
 }
 
 export type UserUniqueInput = {
@@ -245,6 +274,7 @@ export type MeQuery = {
     firstName: string
     lastName: string
     role: Role
+    organizationId: number
     organization?: { __typename?: 'Organization'; id: number } | null
   } | null
 }
@@ -267,17 +297,147 @@ export type CreateStraffepilsMutation = {
 
 export type AllStraffepilsQueryVariables = Exact<{
   byReceiver?: InputMaybe<Scalars['Int']>
+  confirmed?: InputMaybe<Scalars['Boolean']>
 }>
 
 export type AllStraffepilsQuery = {
   __typename?: 'Query'
   allStraffepils?: Array<{
     __typename?: 'Straffepils'
+    id: number
     giverId: number
     receiverId: number
     reason?: string | null
-    receiver: { __typename?: 'User'; id: number }
-    giver: { __typename?: 'User'; id: number }
+    amount: number
+    receiver: {
+      __typename?: 'User'
+      id: number
+      firstName: string
+      lastName: string
+    }
+    giver: {
+      __typename?: 'User'
+      id: number
+      firstName: string
+      lastName: string
+    }
+  } | null> | null
+}
+
+export type GetOrganizaionQueryVariables = Exact<{
+  id: Scalars['Int']
+}>
+
+export type GetOrganizaionQuery = {
+  __typename?: 'Query'
+  organization?: {
+    __typename?: 'Organization'
+    id: number
+    name: string
+    users: Array<{
+      __typename?: 'User'
+      id: number
+      firstName: string
+      lastName: string
+      straffepils?: Array<{
+        __typename?: 'Straffepils'
+        id: number
+        reason?: string | null
+        amount: number
+        receiver: {
+          __typename?: 'User'
+          id: number
+          firstName: string
+          lastName: string
+        }
+        giver: {
+          __typename?: 'User'
+          id: number
+          firstName: string
+          lastName: string
+        }
+      } | null> | null
+    }>
+  } | null
+}
+
+export type GetUserQueryVariables = Exact<{
+  id: Scalars['Int']
+}>
+
+export type GetUserQuery = {
+  __typename?: 'Query'
+  user?: {
+    __typename?: 'User'
+    id: number
+    firstName: string
+    lastName: string
+    organizationId: number
+    organization?: {
+      __typename?: 'Organization'
+      id: number
+      name: string
+    } | null
+    straffepils?: Array<{
+      __typename?: 'Straffepils'
+      reason?: string | null
+      receiver: {
+        __typename?: 'User'
+        id: number
+        firstName: string
+        lastName: string
+      }
+      giver: {
+        __typename?: 'User'
+        id: number
+        firstName: string
+        lastName: string
+      }
+    } | null> | null
+  } | null
+}
+
+export type UserStraffepilsQueryVariables = Exact<{
+  id: Scalars['Int']
+}>
+
+export type UserStraffepilsQuery = {
+  __typename?: 'Query'
+  userStraffepils?: {
+    __typename?: 'UserStraffepils'
+    straffepilsAmount: number
+    straffepils: Array<{
+      __typename?: 'Straffepils'
+      id: number
+      amount: number
+      reason?: string | null
+      giver: {
+        __typename?: 'User'
+        firstName: string
+        lastName: string
+        id: number
+      }
+      receiver: {
+        __typename?: 'User'
+        firstName: string
+        lastName: string
+        id: number
+      }
+    } | null>
+  } | null
+}
+
+export type GetOrganizationUsersQueryVariables = Exact<{
+  id: Scalars['Int']
+}>
+
+export type GetOrganizationUsersQuery = {
+  __typename?: 'Query'
+  organizationUsers?: Array<{
+    __typename?: 'User'
+    id: number
+    firstName: string
+    lastName: string
   } | null> | null
 }
 
@@ -303,6 +463,7 @@ export const MeDocument = gql`
       firstName
       lastName
       role
+      organizationId
       organization {
         id
       }
@@ -347,16 +508,22 @@ export function useCreateStraffepilsMutation() {
   >(CreateStraffepilsDocument)
 }
 export const AllStraffepilsDocument = gql`
-  query AllStraffepils($byReceiver: Int) {
-    allStraffepils(byReceiver: $byReceiver) {
+  query AllStraffepils($byReceiver: Int, $confirmed: Boolean) {
+    allStraffepils(byReceiver: $byReceiver, confirmed: $confirmed) {
+      id
       giverId
       receiverId
       reason
+      amount
       receiver {
         id
+        firstName
+        lastName
       }
       giver {
         id
+        firstName
+        lastName
       }
     }
   }
@@ -369,6 +536,128 @@ export function useAllStraffepilsQuery(
     query: AllStraffepilsDocument,
     ...options,
   })
+}
+export const GetOrganizaionDocument = gql`
+  query GetOrganizaion($id: Int!) {
+    organization(id: $id) {
+      id
+      name
+      users {
+        id
+        firstName
+        lastName
+        straffepils {
+          id
+          reason
+          amount
+          receiver {
+            id
+            firstName
+            lastName
+          }
+          giver {
+            id
+            firstName
+            lastName
+          }
+        }
+      }
+    }
+  }
+`
+
+export function useGetOrganizaionQuery(
+  options: Omit<Urql.UseQueryArgs<GetOrganizaionQueryVariables>, 'query'>
+) {
+  return Urql.useQuery<GetOrganizaionQuery, GetOrganizaionQueryVariables>({
+    query: GetOrganizaionDocument,
+    ...options,
+  })
+}
+export const GetUserDocument = gql`
+  query GetUser($id: Int!) {
+    user(id: $id) {
+      id
+      firstName
+      lastName
+      organizationId
+      organization {
+        id
+        name
+      }
+      straffepils {
+        reason
+        receiver {
+          id
+          firstName
+          lastName
+        }
+        giver {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+`
+
+export function useGetUserQuery(
+  options: Omit<Urql.UseQueryArgs<GetUserQueryVariables>, 'query'>
+) {
+  return Urql.useQuery<GetUserQuery, GetUserQueryVariables>({
+    query: GetUserDocument,
+    ...options,
+  })
+}
+export const UserStraffepilsDocument = gql`
+  query UserStraffepils($id: Int!) {
+    userStraffepils(id: $id) {
+      straffepilsAmount(id: $id)
+      straffepils(id: $id) {
+        id
+        amount
+        reason
+        giver {
+          firstName
+          lastName
+          id
+        }
+        receiver {
+          firstName
+          lastName
+          id
+        }
+      }
+    }
+  }
+`
+
+export function useUserStraffepilsQuery(
+  options: Omit<Urql.UseQueryArgs<UserStraffepilsQueryVariables>, 'query'>
+) {
+  return Urql.useQuery<UserStraffepilsQuery, UserStraffepilsQueryVariables>({
+    query: UserStraffepilsDocument,
+    ...options,
+  })
+}
+export const GetOrganizationUsersDocument = gql`
+  query GetOrganizationUsers($id: Int!) {
+    organizationUsers(id: $id) {
+      id
+      firstName
+      lastName
+    }
+  }
+`
+
+export function useGetOrganizationUsersQuery(
+  options: Omit<Urql.UseQueryArgs<GetOrganizationUsersQueryVariables>, 'query'>
+) {
+  return Urql.useQuery<
+    GetOrganizationUsersQuery,
+    GetOrganizationUsersQueryVariables
+  >({ query: GetOrganizationUsersDocument, ...options })
 }
 import { IntrospectionQuery } from 'graphql'
 export default {
@@ -713,6 +1002,13 @@ export default {
                 },
               },
               {
+                name: 'confirmed',
+                type: {
+                  kind: 'SCALAR',
+                  name: 'Any',
+                },
+              },
+              {
                 name: 'filterString',
                 type: {
                   kind: 'SCALAR',
@@ -823,6 +1119,29 @@ export default {
             ],
           },
           {
+            name: 'organizationUsers',
+            type: {
+              kind: 'LIST',
+              ofType: {
+                kind: 'OBJECT',
+                name: 'User',
+                ofType: null,
+              },
+            },
+            args: [
+              {
+                name: 'id',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any',
+                  },
+                },
+              },
+            ],
+          },
+          {
             name: 'straffepils',
             type: {
               kind: 'OBJECT',
@@ -847,6 +1166,26 @@ export default {
             type: {
               kind: 'OBJECT',
               name: 'User',
+              ofType: null,
+            },
+            args: [
+              {
+                name: 'id',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any',
+                  },
+                },
+              },
+            ],
+          },
+          {
+            name: 'userStraffepils',
+            type: {
+              kind: 'OBJECT',
+              name: 'UserStraffepils',
               ofType: null,
             },
             args: [
@@ -894,6 +1233,17 @@ export default {
         name: 'Straffepils',
         fields: [
           {
+            name: 'amount',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'SCALAR',
+                name: 'Any',
+              },
+            },
+            args: [],
+          },
+          {
             name: 'confirmed',
             type: {
               kind: 'SCALAR',
@@ -915,6 +1265,17 @@ export default {
           },
           {
             name: 'giverId',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'SCALAR',
+                name: 'Any',
+              },
+            },
+            args: [],
+          },
+          {
+            name: 'id',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -1016,6 +1377,17 @@ export default {
             args: [],
           },
           {
+            name: 'organizationId',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'SCALAR',
+                name: 'Any',
+              },
+            },
+            args: [],
+          },
+          {
             name: 'role',
             type: {
               kind: 'NON_NULL',
@@ -1025,6 +1397,73 @@ export default {
               },
             },
             args: [],
+          },
+          {
+            name: 'straffepils',
+            type: {
+              kind: 'LIST',
+              ofType: {
+                kind: 'OBJECT',
+                name: 'Straffepils',
+                ofType: null,
+              },
+            },
+            args: [],
+          },
+        ],
+        interfaces: [],
+      },
+      {
+        kind: 'OBJECT',
+        name: 'UserStraffepils',
+        fields: [
+          {
+            name: 'straffepils',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'LIST',
+                ofType: {
+                  kind: 'OBJECT',
+                  name: 'Straffepils',
+                  ofType: null,
+                },
+              },
+            },
+            args: [
+              {
+                name: 'id',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any',
+                  },
+                },
+              },
+            ],
+          },
+          {
+            name: 'straffepilsAmount',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'SCALAR',
+                name: 'Any',
+              },
+            },
+            args: [
+              {
+                name: 'id',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any',
+                  },
+                },
+              },
+            ],
           },
         ],
         interfaces: [],

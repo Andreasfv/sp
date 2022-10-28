@@ -1,4 +1,6 @@
-import React from 'react'
+import { UserContext } from 'context'
+import { useMeQuery } from 'generated/graphql'
+import React, { useContext } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
@@ -12,19 +14,22 @@ const Wrapper = styled.div`
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
   overflow: hidden;
+  ${props => props.theme.media.mobile} {
+    border-radius: 0;
+  }
 `
 interface HeaderButtonProps {
   to: string
   currentPath: string
 }
 const HeaderButton = styled(Link)<HeaderButtonProps>`
-  padding: 1rem;
-  align-content: center;
+  padding: 0.75rem;
+  align-items: center;
   justify-content: center;
   display: flex;
   flex: 1;
   color: lightyellow;
-  font-size: 19px;
+  font-size: 17px;
   z-index: 100;
   background-color: ${props =>
     props.to === props.currentPath ? 'gray' : 'lightgray'};
@@ -33,11 +38,11 @@ interface HeaderProps {}
 
 export const Header: React.FC<HeaderProps> = () => {
   const location = useLocation()
-
+  const me = useContext(UserContext)
   return (
     <Wrapper>
       <HeaderButton currentPath={location.pathname} to="/straffepils">
-        Home
+        Oversikt
       </HeaderButton>
       <HeaderButton
         currentPath={location.pathname}
@@ -45,12 +50,16 @@ export const Header: React.FC<HeaderProps> = () => {
       >
         Meld Straffepils
       </HeaderButton>
-      <HeaderButton
-        currentPath={location.pathname}
-        to="/straffepils/se-straffepils"
-      >
-        Se Straffepils
-      </HeaderButton>
+      {me?.role === 'ADMIN' ? (
+        <HeaderButton
+          currentPath={location.pathname}
+          to="/straffepils/administrate-straffepils"
+        >
+          Administrer SP
+        </HeaderButton>
+      ) : (
+        ''
+      )}
     </Wrapper>
   )
 }

@@ -1,13 +1,101 @@
-query AllStraffepils($byReceiver: Int) {
-  allStraffepils(byReceiver: $byReceiver) {
+query AllStraffepils($byReceiver: Int, $confirmed: Boolean) {
+  allStraffepils(byReceiver: $byReceiver, confirmed: $confirmed) {
+    id
     giverId
     receiverId
     reason
+    amount
     receiver {
       id
+      firstName
+      lastName
     }
     giver {
       id
+      firstName
+      lastName
     }
+  }
+}
+
+query GetOrganizaion($id: Int!) {
+  organization(id: $id) {
+    id
+    name
+    users {
+      id
+      firstName
+      lastName
+      straffepils {
+        id
+        reason
+        amount
+        receiver {
+          id
+          firstName
+          lastName
+        }
+        giver {
+          id
+          firstName
+          lastName
+        }
+      }
+    }
+  }
+}
+
+query GetUser($id: Int!) {
+  user(id: $id) {
+    id
+    firstName
+    lastName
+    organizationId
+    organization {
+      id
+      name
+    }
+    straffepils {
+      reason
+      receiver {
+        id
+        firstName
+        lastName
+      }
+      giver {
+        id
+        firstName
+        lastName
+      }
+    }
+  }
+}
+
+query UserStraffepils($id: Int!) {
+  userStraffepils(id: $id) {
+    straffepilsAmount(id: $id)
+    straffepils(id: $id) {
+      id
+      amount
+      reason
+      giver {
+        firstName
+        lastName
+        id
+      }
+      receiver {
+        firstName
+        lastName
+        id
+      }
+    }
+  }
+}
+
+query GetOrganizationUsers($id: Int!) {
+  organizationUsers(id: $id) {
+    id
+    firstName
+    lastName
   }
 }

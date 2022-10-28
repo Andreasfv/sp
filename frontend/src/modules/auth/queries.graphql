@@ -5,6 +5,7 @@ query Me {
     firstName
     lastName
     role
+    organizationId
     organization {
       id
     }

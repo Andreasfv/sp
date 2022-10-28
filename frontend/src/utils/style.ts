@@ -18,6 +18,3 @@ export function overloadColorProp<
     ] as unknown as string) ?? props.color
   )
 }
-export function overloadColor(color: string) {
-  return overloadColorProp({ theme, color })
-}

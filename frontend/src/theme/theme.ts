@@ -8,8 +8,10 @@ interface SPTheme {
   colors: {
     houseRed: string
   }
+  sizes: {}
+  layout: {}
 }
-const baseTheme = {} as UrTheme
+export const baseTheme = {} as UrTheme
 
 export const theme = {
   media: {
@@ -17,7 +19,9 @@ export const theme = {
     desktop: '@media screen and (min-width: 769px)',
   },
   sizes: {},
-  layout: {},
+  layout: {
+    ...baseTheme.layout,
+  },
   colors: {
     ...baseTheme.colors,
     houseRed: '#cc3140',

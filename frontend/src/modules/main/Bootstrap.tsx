@@ -7,6 +7,7 @@ const Wrapper = styled.div`
   height: 100%;
   width: 100%;
   display: flex;
+  background-color: ${props => props.theme.colors.gray3};
   flex-direction: column;
 `
 interface BootstrapProps {

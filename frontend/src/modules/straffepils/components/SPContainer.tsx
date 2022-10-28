@@ -9,12 +9,14 @@ export const SPContainer = styled.div`
   width: 600px;
   margin-bottom: 1rem;
   flex: 1;
-  border: ${props => props.theme.colors.gray8} solid 1px;
   border-radius: 1rem;
-  gap: 1rem;
+  overflow-y: scroll;
+  box-shadow: ${props => props.theme.layout.defaultShadow};
   ${props => props.theme.media.mobile} {
     width: 100%;
     height: 100%;
     border-radius: 0;
+    margin-bottom: 0;
   }
+  background-color: white;
 `

@@ -12,4 +12,8 @@ export const SPWrapper = styled.div`
   margin-top: 1rem;
   margin-left: auto;
   margin-right: auto;
+
+  ${props => props.theme.media.mobile} {
+    margin-top: 0;
+  }
 `
