@@ -20,6 +20,6 @@ const app = express()
 
 app.use('/graphql', server)
 app.listen(urConfig.backend.port, () => {
-  console.log(server.getServerUrl())
+  console.log(server.getAddressInfo())
   console.log(`Server is running on http://localhost:${urConfig.backend.port}`)
 })
