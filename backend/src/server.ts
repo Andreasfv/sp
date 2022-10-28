@@ -17,7 +17,7 @@ const server = createServer({
 const app = express()
 
 app.use('/graphql', server)
-
 app.listen(urConfig.backend.port, () => {
+  console.log(server)
   console.log(`Server is running on http://localhost:${urConfig.backend.port}`)
 })
