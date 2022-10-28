@@ -5,6 +5,7 @@ export const SPWrapper = styled.div`
   align-self: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
   height: 100%;
   width: 100%;
   margin-top: 1rem;

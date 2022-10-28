@@ -10,6 +10,7 @@ export const SPContainer = styled.div`
   height: 300px;
   margin-bottom: 1rem;
   flex: 1;
+  gap: 9px;
   border-radius: 1rem;
   overflow-y: scroll;
   box-shadow: ${props => props.theme.layout.defaultShadow};

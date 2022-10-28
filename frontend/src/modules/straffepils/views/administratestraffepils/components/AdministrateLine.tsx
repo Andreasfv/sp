@@ -10,7 +10,10 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   padding: 1rem;
-  border-bottom: 1px solid black;
+  box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
   gap: 1rem;
 `
 
@@ -74,10 +77,11 @@ export const AdministrateLine: React.FC<AdministrateLineLineProps> = ({
   return (
     <Wrapper>
       <ContentBox width="200px">
-        <div>Giver: {giver.firstName}</div>
+        <div>Giver: {giver.firstName + ' ' + giver.lastName}</div>
+        <div>Mottaker {receiver.firstName + ' ' + receiver.lastName}</div>
         <div>Antall: {amount}</div>
       </ContentBox>
-      <div>Begrunnelse: {reason}</div>
+      <div>{reason}</div>
       <BTN onClick={handleConfirmStraffepils}>Y</BTN>
       <BTN
         onClick={() => {

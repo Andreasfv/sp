@@ -10,7 +10,10 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   padding: 1rem;
-  border-bottom: 1px solid black;
+  box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
   gap: 1rem;
 `
 

@@ -120,7 +120,7 @@ export const MeldStraffepils: React.FC<MeldStraffepilsProps> = () => {
     ? data?.organizationUsers.map(user => {
         return {
           value: user?.id ?? 999999,
-          label: user?.firstName ?? '' + user?.lastName ?? '',
+          label: user?.firstName + ' ' + user?.lastName ?? '',
         }
       })
     : [{ value: 999999, label: 'Ingen brukere' }]
