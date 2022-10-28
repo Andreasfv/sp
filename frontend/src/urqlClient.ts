@@ -14,7 +14,7 @@ interface AuthState {
   token: string
 }
 
-const url = `http://localhost:${urConfig.backend.port}/graphql`
+const url = `http://3.75.102.129:${urConfig.backend.port}/graphql`
 
 export const client = createClient({
   url,
