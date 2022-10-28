@@ -7,6 +7,7 @@ export const SPContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 600px;
+  height: 300px;
   margin-bottom: 1rem;
   flex: 1;
   border-radius: 1rem;

@@ -211,6 +211,7 @@ export type UpdateStraffepilsReturn = {
 
 export type User = {
   __typename?: 'User'
+  antallStraffepils?: Maybe<Scalars['Int']>
   email: Scalars['String']
   firstName: Scalars['String']
   id: Scalars['Int']
@@ -467,6 +468,21 @@ export type GetOrganizationUsersQuery = {
   } | null> | null
 }
 
+export type GetOrganizationUsersSpAmountQueryVariables = Exact<{
+  id: Scalars['Int']
+}>
+
+export type GetOrganizationUsersSpAmountQuery = {
+  __typename?: 'Query'
+  organizationUsers?: Array<{
+    __typename?: 'User'
+    id: number
+    firstName: string
+    lastName: string
+    antallStraffepils?: number | null
+  } | null> | null
+}
+
 export const LoginDocument = gql`
   mutation Login($data: UserLoginInput!) {
     loginUser(data: $data) {
@@ -706,6 +722,28 @@ export function useGetOrganizationUsersQuery(
     GetOrganizationUsersQuery,
     GetOrganizationUsersQueryVariables
   >({ query: GetOrganizationUsersDocument, ...options })
+}
+export const GetOrganizationUsersSpAmountDocument = gql`
+  query GetOrganizationUsersSPAmount($id: Int!) {
+    organizationUsers(id: $id) {
+      id
+      firstName
+      lastName
+      antallStraffepils
+    }
+  }
+`
+
+export function useGetOrganizationUsersSpAmountQuery(
+  options: Omit<
+    Urql.UseQueryArgs<GetOrganizationUsersSpAmountQueryVariables>,
+    'query'
+  >
+) {
+  return Urql.useQuery<
+    GetOrganizationUsersSpAmountQuery,
+    GetOrganizationUsersSpAmountQueryVariables
+  >({ query: GetOrganizationUsersSpAmountDocument, ...options })
 }
 import { IntrospectionQuery } from 'graphql'
 export default {
@@ -1426,6 +1464,14 @@ export default {
         kind: 'OBJECT',
         name: 'User',
         fields: [
+          {
+            name: 'antallStraffepils',
+            type: {
+              kind: 'SCALAR',
+              name: 'Any',
+            },
+            args: [],
+          },
           {
             name: 'email',
             type: {

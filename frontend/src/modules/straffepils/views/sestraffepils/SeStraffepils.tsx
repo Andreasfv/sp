@@ -1,7 +1,10 @@
+import { UserContext } from 'context'
+import { useGetOrganizationUsersSpAmountQuery } from 'generated/graphql'
 import { SPWrapper, SPContainer } from 'modules/straffepils/components'
 import { Header } from 'modules/straffepils/components/Header'
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
+import { UserStraffepilsLine } from './components/UserStraffepilsLine'
 
 const Wrapper = styled.div`
   justify-self: center;
@@ -19,11 +22,23 @@ const Wrapper = styled.div`
 interface SeStraffepilsProps {}
 
 export const SeStraffepils: React.FC<SeStraffepilsProps> = () => {
+  const user = useContext(UserContext)
+
+  const [{ data, fetching, error }] = useGetOrganizationUsersSpAmountQuery({
+    variables: {
+      id: user?.organizationId!,
+    },
+  })
+  console.log(data)
+  const listItems = data?.organizationUsers?.map(user =>
+    user ? <UserStraffepilsLine user={user} /> : null
+  )
+
   return (
     <SPWrapper>
       <SPContainer>
         <Header />
-        Se SP
+        {listItems}
       </SPContainer>
     </SPWrapper>
   )

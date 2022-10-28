@@ -8,12 +8,12 @@ import styled from 'styled-components'
 const Wrapper = styled.div`
   width: 100%;
   height: 54px;
+  min-height: 54px;
   background-color: lightgray;
   display: flex;
   border-bottom: 1px solid black;
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
-  overflow: hidden;
   ${props => props.theme.media.mobile} {
     border-radius: 0;
   }

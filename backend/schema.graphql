@@ -129,6 +129,7 @@ type UpdateStraffepilsReturn {
 }
 
 type User {
+  antallStraffepils: Int
   email: String!
   firstName: String!
   id: Int!

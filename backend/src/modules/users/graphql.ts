@@ -139,6 +139,18 @@ export const User = objectType({
         return result.getOrThrow()
       },
     })
+    t.int('antallStraffepils', {
+      resolve: async (parent, _args, context) => {
+        const result = await getManyStraffepils(context, {
+          byReceiver: parent.id,
+        })
+        const amount = result
+          .getOrThrow()
+          .filter((straffepils) => straffepils.confirmed)
+          .reduce((acc, straffepils) => acc + straffepils.amount, 0)
+        return amount
+      },
+    })
   },
 })
 

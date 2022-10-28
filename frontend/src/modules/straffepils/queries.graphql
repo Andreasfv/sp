@@ -107,3 +107,12 @@ query GetOrganizationUsers($id: Int!) {
     lastName
   }
 }
+
+query GetOrganizationUsersSPAmount($id: Int!) {
+  organizationUsers(id: $id) {
+    id
+    firstName
+    lastName
+    antallStraffepils
+  }
+}

@@ -37,6 +37,7 @@ export const Header: React.FC<HeaderProps> = () => {
       ) : (
         ''
       )}
+      <HeaderLink to="straffepils/se-straffepils">SP Oversikt</HeaderLink>
       {me[0].data?.me ? <HeaderLink to="/logout">Logout</HeaderLink> : ''}
     </Wrapper>
   )
