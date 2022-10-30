@@ -50,6 +50,7 @@ export async function loginUser(
       email,
     },
   })
+  console.log('user: ', user)
 
   if (!user) {
     return Fail({
@@ -59,6 +60,7 @@ export async function loginUser(
 
   const passwordMatches = await compare(password, user.password)
 
+  console.log(passwordMatches)
   if (!passwordMatches) {
     return Fail({
       type: ErrorType.InvalidCredentials,

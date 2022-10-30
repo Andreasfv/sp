@@ -101,6 +101,7 @@ export const UserMutation = extendType({
         ),
       },
       resolve: async (_, args, context) => {
+        console.log('BITCH')
         const result = await loginUser(
           context,
           args.data.email,

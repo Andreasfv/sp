@@ -14,8 +14,8 @@ interface AuthState {
   token: string
 }
 
-// const url = `http://localhost:2337/graphql`
-const url = `http://3.75.102.129:2337/graphql`
+const url = `http://localhost:2337/graphql`
+// const url = `http://3.75.102.129:2337/graphql`
 export const client = createClient({
   url,
   exchanges: [
